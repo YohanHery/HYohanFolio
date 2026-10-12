@@ -10,6 +10,7 @@
             --card-bg: #1e293b;
             --accent: #38bdf8;
             --text: #f1f5f9;
+            --text-dim: #94a3b8;
             --hover-dark: rgba(0, 0, 0, 0.2);
         }
 
@@ -31,15 +32,16 @@
         nav {
             width: 100%;
             background-color: var(--card-bg);
-            display: flex;
-            justify-content: center;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
+            z-index: 1000;
+        }
+
+        .nav-desktop {
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
 
         a {
@@ -55,7 +57,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 0.95rem;
-            flex-shrink: 0;
         }
 
         .nav-item:hover {
@@ -68,7 +69,84 @@
             color: var(--accent);
         }
 
-        /* --- Contenu --- */
+        /* --- Barre Mobile & Burger --- */
+        .mobile-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            width: 100%;
+            position: relative;
+            z-index: 1003;
+            background-color: var(--card-bg);
+        }
+
+        .current-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .burger-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 6px;
+        }
+
+        .burger-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--text);
+            border-radius: 3px;
+            transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Animation Burger -> Croix */
+        .burger-btn.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+            background-color: var(--accent);
+        }
+        .burger-btn.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .burger-btn.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+            background-color: var(--accent);
+        }
+
+        /* Voile flouté */
+        .drawer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .nav-links-mobile {
+            display: none;
+        }
+
+        /* --- Contenu Principal --- */
         .container {
             max-width: 1000px;
             width: 90%;
@@ -78,7 +156,7 @@
 
         .section {
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         .section.active-content {
@@ -86,11 +164,56 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Style Contacts --- */
+        /* --- Style États Vides (Empty State) --- */
+        .empty-state {
+            border: 2px dashed rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 14px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+            transition: border-color 0.3s;
+        }
+
+        .empty-state:hover {
+            border-color: var(--accent);
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: inline-block;
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .empty-state h4 {
+            margin: 0 0 8px 0;
+            font-size: 1.15rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        /* --- Contacts --- */
         .contact-list {
             list-style: none;
             padding: 0;
@@ -113,7 +236,7 @@
             word-break: break-all;
         }
 
-        /* --- Style CTF (Grille) --- */
+        /* --- CTF --- */
         .ctf-category {
             margin-bottom: 40px;
         }
@@ -151,15 +274,99 @@
             margin: 15px 10px 5px 10px;
         }
 
-        /* --- Media Queries Mobile --- */
+        /* --- Carte Placeholder (No More Chall) --- */
+        .ctf-card-placeholder {
+            background: rgba(30, 41, 59, 0.35);
+            border: 2px dashed rgba(56, 189, 248, 0.25);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-dim);
+            transition: border-color 0.3s, background 0.3s;
+            user-select: none;
+        }
+
+        .ctf-card-placeholder:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .ctf-card-placeholder .placeholder-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .ctf-card-placeholder h4 {
+            margin: 0 0 6px 0;
+            color: var(--text-dim);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ctf-card-placeholder p {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* --- Responsive / Mobile --- */
         @media (max-width: 650px) {
-            nav {
-                justify-content: flex-start;
+            .nav-desktop {
+                display: none;
             }
 
-            .nav-item {
-                padding: 14px 18px;
-                font-size: 0.85rem;
+            .mobile-bar {
+                display: flex;
+            }
+
+            .nav-links-mobile {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 250px;
+                height: 100vh;
+                background-color: var(--card-bg);
+                padding-top: 75px;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.6);
+                transform: translateX(100%);
+                transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1002;
+            }
+
+            .nav-links-mobile.open {
+                transform: translateX(0);
+            }
+
+            .nav-links-mobile .nav-item {
+                padding: 18px 24px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                opacity: 0;
+                transform: translateX(20px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+
+            .nav-links-mobile.open .nav-item {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            .nav-links-mobile.open .nav-item:nth-child(1) { transition-delay: 0.1s; }
+            .nav-links-mobile.open .nav-item:nth-child(2) { transition-delay: 0.15s; }
+            .nav-links-mobile.open .nav-item:nth-child(3) { transition-delay: 0.2s; }
+            .nav-links-mobile.open .nav-item:nth-child(4) { transition-delay: 0.25s; }
+
+            .nav-links-mobile .active {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                border-left: 4px solid var(--accent);
+                background-color: var(--hover-dark);
             }
 
             .container {
@@ -167,7 +374,6 @@
                 margin-top: 20px;
             }
 
-            /* Passe la grille en 1 colonne sur smartphone */
             .ctf-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
@@ -176,32 +382,75 @@
             .ctf-card img {
                 height: 180px;
             }
+            
+            .empty-state {
+                padding: 30px 15px;
+            }
+
+            .ctf-card-placeholder {
+                min-height: 160px;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-item active" onclick="showSection('experience', this)">Experience</div>
-        <div class="nav-item" onclick="showSection('projet', this)">Projet</div>
-        <div class="nav-item" onclick="showSection('ctf', this)">CTF</div>
-        <div class="nav-item" onclick="showSection('contact', this)">Contact</div>
+        <div class="nav-desktop">
+            <div class="nav-item active" onmouseenter="showSection('experience', this)" tabindex="0">Experience</div>
+            <div class="nav-item" onmouseenter="showSection('projet', this)" tabindex="0">Projet</div>
+            <div class="nav-item" onmouseenter="showSection('ctf', this)" tabindex="0">CTF</div>
+            <div class="nav-item" onmouseenter="showSection('contact', this)" tabindex="0">Contact</div>
+        </div>
+
+        <!-- Barre Mobile -->
+        <div class="mobile-bar">
+            <span class="current-title" id="current-title">Experience</span>
+            <button class="burger-btn" id="burger-btn" onclick="toggleMenu()" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="drawer-overlay" id="overlay" onclick="toggleMenu()"></div>
+        <div class="nav-links-mobile" id="nav-drawer">
+            <div class="nav-item active" onclick="showSection('experience', this)">Experience</div>
+            <div class="nav-item" onclick="showSection('projet', this)">Projet</div>
+            <div class="nav-item" onclick="showSection('ctf', this)">CTF</div>
+            <div class="nav-item" onclick="showSection('contact', this)">Contact</div>
+        </div>
     </nav>
 
     <div class="container">
         
+        <!-- SECTION : EXPÉRIENCE -->
         <section id="experience" class="section active-content">
             <h2>Mon Expérience</h2>
             <p>Détaillez ici votre parcours professionnel...</p>
         </section>
 
+        <!-- SECTION : PROJETS -->
         <section id="projet" class="section">
             <h2>Mes Projets</h2>
-            <p>Liste de vos réalisations techniques...</p>
+            <div class="empty-state">
+                <div class="empty-icon">🛰️</div>
+                <h4>Déploiement en cours</h4>
+                <p>Aucun projet public n'est répertorié pour le moment. De nouvelles documentations et dépôts seront bientôt indexés ici.</p>
+            </div>
         </section>
 
+        <!-- SECTION : CTF -->
         <section id="ctf" class="section">
             <h2>Write-ups & Challenges CTF</h2>
+
+            <div class="ctf-category">
+                <h3>Facile</h3>
+                <div class="empty-state">
+                    <div class="empty-icon">🔒</div>
+                    <h4>Zone Non Défrichée</h4>
+                    <p>Aucun write-up de difficulté facile n'a encore été publié.</p>
+                </div>
+            </div>
 
             <div class="ctf-category">
                 <h3>Moyen</h3>
@@ -212,28 +461,29 @@
                             <h4>MISSION:ASTER</h4>
                         </div>
                     </a>
-                    <div class="ctf-card">
-                        <img src="https://via.placeholder.com/300x150" alt="CTF Sténographie">
-                        <h4>Sténographie</h4>
-                    </div>
                 </div>
             </div>
 
             <div class="ctf-category">
                 <h3>Difficile</h3>
-                <div class="ctf-grid">
-                    <div class="ctf-card">
-                        <img src="https://via.placeholder.com/300x150" alt="CTF CrackMe v1">
-                        <h4>CrackMe v1</h4>
-                    </div>
-                    <div class="ctf-card">
-                        <img src="https://via.placeholder.com/300x150" alt="CTF Binary Blast">
-                        <h4>Binary Blast</h4>
-                    </div>
+                <div class="empty-state">
+                    <div class="empty-icon">🔒</div>
+                    <h4>Zone Non Défrichée</h4>
+                    <p>Aucun write-up de difficulté difficile n'a encore été publié.</p>
+                </div>
+            </div>
+
+            <div class="ctf-category">
+                <h3>Extrême</h3>
+                <div class="empty-state">
+                    <div class="empty-icon">🔒</div>
+                    <h4>Zone Non Défrichée</h4>
+                    <p>Aucun write-up de difficulté extrême n'a encore été publié.</p>
                 </div>
             </div>
         </section>
 
+        <!-- SECTION : CONTACT -->
         <section id="contact" class="section">
             <h2>Me Contacter</h2>
             <ul class="contact-list">
@@ -246,16 +496,70 @@
     </div>
 
     <script>
+        function toggleMenu() {
+            const drawer = document.getElementById('nav-drawer');
+            const burger = document.getElementById('burger-btn');
+            const overlay = document.getElementById('overlay');
+
+            drawer.classList.toggle('open');
+            burger.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
         function showSection(sectionId, element) {
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection.classList.contains('active-content')) return;
+
             const sections = document.querySelectorAll('.section');
             sections.forEach(s => s.classList.remove('active-content'));
 
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
+            const allNavItems = document.querySelectorAll('.nav-item');
+            allNavItems.forEach(item => item.classList.remove('active'));
 
-            document.getElementById(sectionId).classList.add('active-content');
-            element.classList.add('active');
+            targetSection.classList.add('active-content');
+
+            const sectionName = element.innerText.trim();
+            document.getElementById('current-title').innerText = sectionName;
+
+            allNavItems.forEach(item => {
+                if (item.innerText.trim() === sectionName) {
+                    item.classList.add('active');
+                }
+            });
+
+            const drawer = document.getElementById('nav-drawer');
+            if (drawer.classList.contains('open')) {
+                toggleMenu();
+            }
         }
+
+        document.querySelectorAll('.nav-desktop .nav-item').forEach(item => {
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    item.dispatchEvent(new MouseEvent('mouseenter'));
+                }
+            });
+        });
+
+        function checkOddGrids() {
+            const grids = document.querySelectorAll('.ctf-grid');
+            grids.forEach(grid => {
+                const itemsCount = grid.children.length;
+                if (itemsCount % 2 !== 0 && itemsCount > 0) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'ctf-card-placeholder';
+                    placeholder.innerHTML = `
+                        <div class="placeholder-icon">📦</div>
+                        <h4>Plus de challenges</h4>
+                        <p>D'autres challenges arrivent bientôt</p>
+                    `;
+                    grid.appendChild(placeholder);
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', checkOddGrids);
     </script>
 </body>
 </html>

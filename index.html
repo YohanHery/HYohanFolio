@@ -12,7 +12,6 @@
             --card-hover-bg: #24344d;
             --accent: #38bdf8;
             --accent-glow: rgba(56, 189, 248, 0.25);
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
             --text: #f1f5f9;
             --text-dim: #94a3b8;
             --hover-dark: rgba(0, 0, 0, 0.2);
@@ -24,7 +23,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text);
             margin: 0;
@@ -117,7 +116,6 @@
             transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
         }
 
-        /* Animation Burger -> Croix */
         .burger-btn.open span:nth-child(1) {
             transform: translateY(8px) rotate(45deg);
             background-color: var(--accent);
@@ -132,7 +130,6 @@
             background-color: var(--accent);
         }
 
-        /* Voile flouté */
         .drawer-overlay {
             display: none;
             position: fixed;
@@ -157,9 +154,9 @@
             display: none;
         }
 
-        /* --- Contenu Principal --- */
+        /* --- Conteneur Principal --- */
         .container {
-            max-width: 1050px;
+            max-width: 1080px;
             width: 90%;
             margin-top: 35px;
             margin-bottom: 50px;
@@ -167,14 +164,13 @@
         }
 
         .section-header {
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         .section-header h2 {
             font-size: 2rem;
             margin: 0 0 8px 0;
             color: var(--text);
-            position: relative;
             display: inline-block;
         }
 
@@ -215,60 +211,301 @@
             }
         }
 
-        /* --- Style États Vides --- */
-        .empty-state {
-            border: 2px dashed rgba(56, 189, 248, 0.3);
-            background: rgba(30, 41, 59, 0.5);
+        /* --- Timeline Expérience --- */
+        .timeline {
+            position: relative;
+            padding: 10px 0;
+            margin-top: 15px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 12px;
+            bottom: 12px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent) 0%, rgba(56, 189, 248, 0.1) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 56px;
+            margin-bottom: 28px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 10px;
+            top: 24px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--accent);
+            box-shadow: 0 0 16px var(--accent);
+            transform: scale(1.15);
+        }
+
+        .timeline-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            margin: 20px 0;
-            transition: border-color 0.3s;
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .empty-state:hover {
-            border-color: var(--accent);
+        .timeline-card.highlight-card {
+            border-left: 3px solid var(--accent);
         }
 
-        .empty-icon {
-            font-size: 2.5rem;
+        .timeline-item:hover .timeline-card {
+            background: var(--card-hover-bg);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateX(6px);
+            box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
             margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-badge {
             display: inline-block;
-            animation: floatSlow 3s ease-in-out infinite;
-        }
-
-        @keyframes floatSlow {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-6px);
-            }
-        }
-
-        .empty-state h4 {
-            margin: 0 0 8px 0;
-            font-size: 1.15rem;
+            background: rgba(56, 189, 248, 0.12);
             color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
         }
 
-        .empty-state p {
-            margin: 0;
+        .timeline-badge.secondary {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-dim);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        .timeline-role {
+            margin: 0 0 4px 0;
+            font-size: 1.2rem;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .timeline-company {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .timeline-date {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            white-space: nowrap;
+        }
+
+        .timeline-desc {
             color: var(--text-dim);
             font-size: 0.95rem;
-            max-width: 480px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.5;
+            line-height: 1.6;
+            margin: 0 0 16px 0;
         }
 
-        /* */
-        /* --- Style Section Contact Refondue --- */
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: rgba(15, 23, 42, 0.7);
+            color: var(--text);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tag.skill-soft {
+            background: rgba(56, 189, 248, 0.08);
+            border-color: rgba(56, 189, 248, 0.25);
+            color: var(--accent);
+        }
+
+        /* --- Section Projets & Filtres --- */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0 28px 0;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: #0f172a;
+            border-color: var(--accent);
+            box-shadow: 0 2px 10px var(--accent-glow);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .project-card.hidden {
+            display: none !important;
+        }
+
+        .project-card:hover {
+            background: var(--card-hover-bg);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.4), 0 0 18px var(--accent-glow);
+        }
+
+        .project-card.featured {
+            border-color: rgba(56, 189, 248, 0.35);
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+        }
+
+        .project-card-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+        }
+
+        .project-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.05rem;
+            color: var(--text);
+            line-height: 1.35;
+        }
+
+        .project-card p {
+            font-size: 0.88rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            margin: 0 0 14px 0;
+            flex-grow: 1;
+        }
+
+        .project-card p strong {
+            color: var(--text);
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .p-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            color: var(--text-dim);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .p-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .project-repo-banner {
+            margin-top: 30px;
+            padding: 16px 20px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .project-repo-banner a {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* --- Section Contact --- */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -347,10 +584,6 @@
             transition: transform 0.3s ease;
         }
 
-        .contact-bubble-card:hover .bubble-icon-wrap svg {
-            transform: scale(1.05);
-        }
-
         .bubble-title {
             font-size: 1.25rem;
             font-weight: 700;
@@ -388,10 +621,8 @@
             border-radius: 10px;
             font-size: 0.88rem;
             font-weight: 600;
-            text-decoration: none;
-            transition: all 0.25s ease;
             cursor: pointer;
-            outline: none;
+            transition: all 0.25s ease;
             width: 100%;
         }
 
@@ -422,13 +653,7 @@
             background: rgba(56, 189, 248, 0.08);
         }
 
-        .bubble-copy-btn.copied {
-            background: rgba(34, 197, 94, 0.15);
-            border-color: #22c55e;
-            color: #4ade80;
-        }
-
-        /* Notification toast pour copie */
+        /* --- Modale & Toast --- */
         .toast-notify {
             position: fixed;
             bottom: 24px;
@@ -445,7 +670,7 @@
             transform: translateY(20px);
             pointer-events: none;
             transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 2000;
+            z-index: 2500;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -456,7 +681,122 @@
             transform: translateY(0);
         }
 
-        /* --- CTF --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-box {
+            background: #1e293b;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 520px;
+            padding: 28px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.open .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--accent);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: #0f172a;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 10px 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn-gmail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-default-mail {
+            background: transparent;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            color: var(--text-dim);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* --- CTF Section --- */
         .ctf-category {
             margin-bottom: 40px;
         }
@@ -494,7 +834,6 @@
             margin: 15px 10px 5px 10px;
         }
 
-        /* --- Carte Placeholder --- */
         .ctf-card-placeholder {
             background: rgba(30, 41, 59, 0.35);
             border: 2px dashed rgba(56, 189, 248, 0.25);
@@ -507,13 +846,7 @@
             padding: 20px;
             text-align: center;
             color: var(--text-dim);
-            transition: border-color 0.3s, background 0.3s;
             user-select: none;
-        }
-
-        .ctf-card-placeholder:hover {
-            border-color: rgba(56, 189, 248, 0.5);
-            background: rgba(30, 41, 59, 0.5);
         }
 
         .ctf-card-placeholder .placeholder-icon {
@@ -526,7 +859,6 @@
             margin: 0 0 6px 0;
             color: var(--text-dim);
             font-size: 1rem;
-            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
@@ -536,16 +868,44 @@
             opacity: 0.8;
         }
 
-        /* */
+        .empty-state {
+            border: 2px dashed rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .empty-state h4 {
+            margin: 0 0 8px 0;
+            font-size: 1.15rem;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            max-width: 480px;
+            margin-inline: auto;
+        }
+
         /* --- Responsive / Mobile --- */
-        @media (max-width: 860px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 18px;
+        @media (max-width: 960px) {
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .contact-bubble-card {
-                padding: 26px 20px;
+            .contact-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -581,201 +941,147 @@
             .nav-links-mobile .nav-item {
                 padding: 18px 24px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                opacity: 0;
-                transform: translateX(20px);
-                transition: opacity 0.3s ease, transform 0.3s ease;
-            }
-
-            .nav-links-mobile.open .nav-item {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            .nav-links-mobile.open .nav-item:nth-child(1) {
-                transition-delay: 0.1s;
-            }
-
-            .nav-links-mobile.open .nav-item:nth-child(2) {
-                transition-delay: 0.15s;
-            }
-
-            .nav-links-mobile.open .nav-item:nth-child(3) {
-                transition-delay: 0.2s;
-            }
-
-            .nav-links-mobile.open .nav-item:nth-child(4) {
-                transition-delay: 0.25s;
             }
 
             .nav-links-mobile .active {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 border-left: 4px solid var(--accent);
                 background-color: var(--hover-dark);
             }
 
-            .container {
-                width: 92%;
-                margin-top: 20px;
+            .timeline::before {
+                left: 12px;
+            }
+
+            .timeline-dot {
+                left: 4px;
+            }
+
+            .timeline-item {
+                padding-left: 36px;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
             }
 
             .ctf-grid {
                 grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .ctf-card img {
-                height: 180px;
-            }
-
-            .empty-state {
-                padding: 30px 15px;
-            }
-
-            .ctf-card-placeholder {
-                min-height: 160px;
             }
         }
 
-        /* --- Modal de Contact --- */
-        .mail-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* --- Bandeau Classements CTF --- */
+        .ctf-rankings-wrapper {
+            margin-bottom: 35px;
         }
 
-        .mail-modal-overlay.open {
-            display: flex;
-            opacity: 1;
+        .ctf-badge-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 14px;
         }
 
-        .mail-modal-content {
-            background: #1e293b;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.1);
-            border-radius: 16px;
-            width: 90%;
-            max-width: 480px;
-            padding: 28px;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .mail-modal-overlay.open .mail-modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-close-btn {
-            position: absolute;
-            top: 16px;
-            right: 18px;
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            font-size: 1.6rem;
+        .ctf-rank-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px;
             cursor: pointer;
-            line-height: 1;
-        }
-
-        .modal-close-btn:hover {
-            color: var(--accent);
-        }
-
-        .mail-modal-content h3 {
-            margin: 0 0 6px 0;
-            color: var(--accent);
-            font-size: 1.3rem;
-        }
-
-        .modal-sub {
-            margin: 0 0 20px 0;
-            font-size: 0.9rem;
-            color: var(--text-dim);
-        }
-
-        .form-group {
+            transition: all 0.25s ease;
+            user-select: none;
             display: flex;
             flex-direction: column;
-            margin-bottom: 14px;
-            text-align: left;
         }
 
-        .form-group label {
-            font-size: 0.85rem;
+        .ctf-rank-card:hover {
+            background: var(--card-hover-bg);
+            border-color: rgba(56, 189, 248, 0.45);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.4), 0 0 15px var(--accent-glow);
+        }
+
+        .ctf-rank-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .ctf-rank-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+
+        .ctf-rank-position {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .ctf-rank-position small {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .ctf-rank-name {
+            font-size: 0.95rem;
+            font-weight: 700;
             color: var(--text);
             margin-bottom: 6px;
-            font-weight: 500;
         }
 
-        .form-group input,
-        .form-group textarea {
-            background: #0f172a;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 8px;
-            color: var(--text);
-            padding: 10px 12px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
+        .ctf-rank-hint {
+            font-size: 0.72rem;
+            color: var(--accent);
+            font-weight: 600;
+            opacity: 0.8;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--accent);
-        }
-
-        .modal-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .btn-gmail {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: var(--accent);
-            color: #0f172a;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: filter 0.2s, transform 0.1s;
-        }
-
-        .btn-gmail:hover {
-            filter: brightness(1.1);
-            transform: translateY(-1px);
-        }
-
-        .btn-default-mail {
-            background: transparent;
-            border: 1px solid rgba(148, 163, 184, 0.3);
+        /* Zone descriptive dépliable */
+        .ctf-rank-details {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            font-size: 0.82rem;
+            line-height: 1.45;
             color: var(--text-dim);
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: background 0.2s, color 0.2s;
+            margin-top: 0;
+            transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+            border-top: 1px dashed transparent;
         }
 
-        .btn-default-mail:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text);
+        .ctf-rank-card.open {
+            border-color: var(--accent);
+            background: var(--card-hover-bg);
+        }
+
+        .ctf-rank-card.open .ctf-rank-hint {
+            display: none;
+        }
+
+        .ctf-rank-card.open .ctf-rank-details {
+            max-height: 140px;
+            opacity: 1;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top-color: rgba(148, 163, 184, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .ctf-badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .ctf-badge-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -813,29 +1119,526 @@
         <!-- SECTION : EXPÉRIENCE -->
         <section id="experience" class="section active-content">
             <div class="section-header">
-                <h2>Mon Expérience</h2>
-                <p class="section-subtitle">Aperçu de mon parcours technique et professionnel.</p>
+                <h2>Mon Parcours & Expériences</h2>
+                <p class="section-subtitle">Stages techniques, engagements universitaires et expériences
+                    professionnelles.</p>
             </div>
-            <p>Détaillez ici votre parcours professionnel...</p>
+            <div class="timeline">
+                <!-- Stage Technique -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card highlight-card">
+                        <div class="timeline-header">
+                            <div>
+                                <span class="timeline-badge">Stage Technique</span>
+                                <h3 class="timeline-role">Développeur Informatique</h3>
+                                <div class="timeline-company">PROXIAD AXE SEINE</div>
+                            </div>
+                            <span class="timeline-date">Stage de 4 mois</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Montée en compétences et développements applicatifs full-stack sur des architectures
+                            modernes.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">Laravel</span>
+                            <span class="tag">PHP</span>
+                            <span class="tag">Vue.js</span>
+                            <span class="tag">React</span>
+                            <span class="tag">Angular</span>
+                            <span class="tag">Doctrine</span>
+                            <span class="tag skill-soft">Travail en équipe</span>
+                            <span class="tag skill-soft">Autonomie</span>
+                            <span class="tag skill-soft">Adaptabilité</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Représentant étudiant -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div>
+                                <span class="timeline-badge">Engagement</span>
+                                <h3 class="timeline-role">Représentant de Licence Informatique</h3>
+                                <div class="timeline-company">UFR Sciences et Techniques du Madrillet</div>
+                            </div>
+                            <span class="timeline-date">L1 / L2 / M1</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Porte-parole et relais entre le corps enseignant et la promotion, participation aux conseils
+                            pédagogiques et accompagnement des étudiants.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag skill-soft">Communication</span>
+                            <span class="tag skill-soft">Médiation</span>
+                            <span class="tag skill-soft">Pédagogie</span>
+                            <span class="tag skill-soft">Écoute active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expériences Professionnelles Diverses -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div>
+                                <span class="timeline-badge secondary">Expérience</span>
+                                <h3 class="timeline-role">Préparateur de commandes</h3>
+                                <div class="timeline-company">CERP Rouen</div>
+                            </div>
+                            <span class="timeline-date">Octobre 2024 - Mars 2026</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Gestion logistique en flux continu, polyvalence, autonomie et rigueur opérationnelle.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag skill-soft">Rigueur</span>
+                            <span class="tag skill-soft">Polyvalence</span>
+                            <span class="tag skill-soft">Autonomie</span>
+                            <span class="tag skill-soft">Efficacité</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div>
+                                <span class="timeline-badge secondary">Saisonnier</span>
+                                <h3 class="timeline-role">Ouvrier Agricole — Gestion de silo</h3>
+                                <div class="timeline-company">Natup</div>
+                            </div>
+                            <span class="timeline-date">Moissons 2022 / 2023 / 2024</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Surveillance des flux de récolte, gestion du stockage et maintenance des installations en
+                            période de forte cadence.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag skill-soft">Sens des responsabilités</span>
+                            <span class="tag skill-soft">Endurance</span>
+                            <span class="tag skill-soft">Travail en équipe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div>
+                                <span class="timeline-badge secondary">Job d'été</span>
+                                <h3 class="timeline-role">Agent de maintenance polyvalent</h3>
+                                <div class="timeline-company">AJV Vernon</div>
+                            </div>
+                            <span class="timeline-date">Juillet — Août 2021</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Interventions techniques rapides, entretien des infrastructures, autonomie et
+                            efficacité.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag skill-soft">Résolution de problèmes</span>
+                            <span class="tag skill-soft">Polyvalence</span>
+                            <span class="tag skill-soft">Autonomie</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </section>
 
         <!-- SECTION : PROJETS -->
         <section id="projet" class="section">
             <div class="section-header">
-                <h2>Mes Projets</h2>
-                <p class="section-subtitle">Réalisations, architectures et développements personnels.</p>
+                <h2>Mes Réalisations & Projets</h2>
+                <p class="section-subtitle">Projets universitaires (L2/L3), initiatives personnelles et outils
+                    spécialisés.</p>
             </div>
-            <div class="empty-state">
-                <div class="empty-icon">🛰️</div>
-                <h4>Déploiement en cours</h4>
-                <p>Aucun projet public n'est répertorié pour le moment. De nouvelles documentations et dépôts seront
-                    bientôt indexés ici.</p>
+
+            <!-- Filtres dynamiques -->
+            <div class="filter-container">
+                <button class="filter-btn active" onclick="filterProjects('all', this)">Tous</button>
+                <button class="filter-btn" onclick="filterProjects('security', this)">Sécurité & Réseau</button>
+                <button class="filter-btn" onclick="filterProjects('c-lang', this)">C / Système</button>
+                <button class="filter-btn" onclick="filterProjects('ocaml', this)">OCaml / Logique</button>
+                <button class="filter-btn" onclick="filterProjects('python-java', this)">Python & Java</button>
+                <button class="filter-btn" onclick="filterProjects('web', this)">Web & Jeux</button>
+                <button class="filter-btn" onclick="filterProjects('data', this)">Data & BI</button>
+            </div>
+
+            <div class="project-grid" id="project-grid">
+
+                <!-- 1. Infrastructure Réseau -->
+                <div class="project-card featured" data-category="security">
+                    <div>
+                        <div class="project-card-badge">Cybersécurité • Personnel</div>
+                        <h4>Ingénierie & Sécurisation Réseau Segmenté (Partie 1)</h4>
+                        <p>
+                            Mise en place d'un réseau segmenté avec politique de filtrage d'accès stricte,
+                            administration centralisée et tests de sécurité offensifs/défensifs.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">pfSense</span>
+                            <span class="tag">VLAN</span>
+                            <span class="tag">Sécurité Réseau</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery" target="_blank" rel="noopener noreferrer"
+                            class="p-btn">Voir sur GitHub ↗</a>
+                    </div>
+                </div>
+
+                <!-- 2. Traitement d'images en daemon -->
+                <div class="project-card" data-category="c-lang">
+                    <div>
+                        <div class="project-card-badge">Système • Licence 3</div>
+                        <h4>Serveur Démon de Filtrage d'Images</h4>
+                        <p>
+                            Architecture client-serveur locale en C permettant d'appliquer des filtres graphiques.
+                            Exploitation avancée du parallélisme avec <strong>threads</strong>,
+                            <strong>processus</strong>, <strong>sémaphores</strong> et <strong>tubes (pipes)</strong>.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">C</span>
+                            <span class="tag">Daemon</span>
+                            <span class="tag">Threads</span>
+                            <span class="tag">IPC</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L3 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 3. Graphe Hamiltonien -->
+                <div class="project-card" data-category="python-java">
+                    <div>
+                        <div class="project-card-badge">Algorithmique • Licence 3</div>
+                        <h4>Générateur & Solveur de Cycles Hamiltoniens</h4>
+                        <p>
+                            Application Python dédiée à l'analyse et à la comparaison empirique de différents
+                            algorithmes de recherche de chemins et cycles hamiltoniens sur des graphes.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Graphes</span>
+                            <span class="tag">Complexité</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L3 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 4. Syllogismes complexes -->
+                <div class="project-card" data-category="ocaml">
+                    <div>
+                        <div class="project-card-badge">Logique Formelle • Licence 3</div>
+                        <h4>Validateur de Syllogismes (Diagrammes de Venn)</h4>
+                        <p>
+                            Moteur formel écrit en OCaml assurant la validation logique de syllogismes catégoriques
+                            complexes via modélisation booléenne des diagrammes de Venn.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">OCaml</span>
+                            <span class="tag">Venn</span>
+                            <span class="tag">Logique Formelle</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L3 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 5. TP Java & IHM -->
+                <div class="project-card" data-category="python-java">
+                    <div>
+                        <div class="project-card-badge">POO • Licence 3</div>
+                        <h4>Projets & Applications Java (IHM)</h4>
+                        <p>
+                            Travaux pratiques approfondis en Java orientés architecture objet (design patterns,
+                            héritage, polymorphisme) avec conception d'interfaces graphiques interactives
+                            (Swing/JavaFX).
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Java</span>
+                            <span class="tag">IHM</span>
+                            <span class="tag">POO</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L3 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 6. BiblioWeb -->
+                <div class="project-card" data-category="web">
+                    <div>
+                        <div class="project-card-badge">Web • Licence 2</div>
+                        <h4>BiblioWeb — Gestion de Bibliothèque</h4>
+                        <p>
+                            Portail de gestion complet : comptes lecteurs, catalogue d'annonces de livres, système de
+                            recherche indexée multi-critères, listes de réservation et suivi précis des stocks.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">PHP</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">Gestion Stocks</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L2 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 7. Compteur d'occurrences -->
+                <div class="project-card" data-category="c-lang">
+                    <div>
+                        <div class="project-card-badge">Système / C • Licence 2</div>
+                        <h4>Compteur Exclusif de Mots (projet_occ)</h4>
+                        <p>
+                            Outil CLI optimisé en C calculant de manière exclusive la distribution fréquentielle de mots
+                            à travers un ensemble arbitraire de fichiers texte.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">C</span>
+                            <span class="tag">Pointeurs</span>
+                            <span class="tag">CLI</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L2 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 8. Distance de Jaccard -->
+                <div class="project-card" data-category="c-lang">
+                    <div>
+                        <div class="project-card-badge">Algorithmique • Licence 2</div>
+                        <h4>Distance de Jaccard en C</h4>
+                        <p>
+                            Mesure d'indices de dissimilarité textuelle 2 à 2 sur structures de données allouées
+                            dynamiquement en mémoire vive.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">C</span>
+                            <span class="tag">Allocation Dynamique</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L2 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 9. Algorithme de Tseitin -->
+                <div class="project-card" data-category="ocaml">
+                    <div>
+                        <div class="project-card-badge">Théorie • Licence 2</div>
+                        <h4>Algorithme de Tseitin en OCaml</h4>
+                        <p>
+                            Transformation de circuits logiques propositionnels en formules équisatisfaisables sous
+                            forme normale conjonctive (FNC).
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">OCaml</span>
+                            <span class="tag">SAT</span>
+                            <span class="tag">FNC</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L2 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 10. Calculs sur Polynômes -->
+                <div class="project-card" data-category="ocaml">
+                    <div>
+                        <div class="project-card-badge">Calcul Formel • Licence 2</div>
+                        <h4>funpolyproj (Multiplication de Karatsuba)</h4>
+                        <p>
+                            Bibliothèque de fonctions algébriques sur polynômes intégrant l'algorithme
+                            divide-and-conquer de Karatsuba pour accélérer le produit de degrés élevés.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">OCaml</span>
+                            <span class="tag">Karatsuba</span>
+                            <span class="tag">Polynômes</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery/projet-de-licence" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Dépôt L2 ↗</a>
+                    </div>
+                </div>
+
+                <!-- 11. Aircraft Tracker -->
+                <div class="project-card" data-category="data">
+                    <div>
+                        <div class="project-card-badge">Aéronautique & Data • Personnel</div>
+                        <h4>Aircraft Certification & Airworthiness Tracker</h4>
+                        <p>
+                            Tableau de bord de pilotage de conformité (norme CS-25) développé sous Power BI & DAX. Suivi
+                            opérationnel de 25+ modifications techniques et arbitrage du backlog réglementaire.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Power BI</span>
+                            <span class="tag">DAX</span>
+                            <span class="tag">CS-25</span>
+                            <span class="tag">Certification</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="#contact" class="p-btn">Sur demande ↗</a>
+                    </div>
+                </div>
+
+                <!-- 12. mylibgames -->
+                <div class="project-card" data-category="web">
+                    <div>
+                        <div class="project-card-badge">Game Dev • Personnel</div>
+                        <h4>mylibgames — Collection de Mini-Jeux 2D</h4>
+                        <p>
+                            Espace expérimental regroupant des prototypes de mini-jeux 2D (mécaniques d'arcade, boucle
+                            de jeu Canvas, gestion de collisions) développés pour explorer le design interactif.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">Canvas</span>
+                            <span class="tag">Game Dev</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/YohanHery/YohanDef.github.io/" target="_blank"
+                            rel="noopener noreferrer" class="p-btn">Voir sur GitHub ↗</a>
+                    </div>
+                </div>
+
+                <!-- 13. TutoExcelVBA -->
+                <div class="project-card" data-category="data">
+                    <div>
+                        <div class="project-card-badge">Bureautique • Personnel</div>
+                        <h4>Tutoriel Interactif Excel & Macros VBA</h4>
+                        <p>
+                            Module d'auto-formation progressif basé sur des feuilles de calcul automatisées par macros
+                            pour apprendre les fondamentaux de VBA et du traitement de tableaux.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Excel</span>
+                            <span class="tag">VBA</span>
+                            <span class="tag">Macros</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/yohanhery" target="_blank" rel="noopener noreferrer"
+                            class="p-btn">Voir sur GitHub ↗</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="project-repo-banner">
+                <span>Tous les dépôts universitaires et projets sont regroupés sur mon espace GitHub :</span>
+                <a href="https://github.com/yohanhery/projet-de-licence" target="_blank" rel="noopener noreferrer">
+                    github.com/yohanhery/projet-de-licence ↗
+                </a>
             </div>
         </section>
 
         <!-- SECTION : CTF -->
         <section id="ctf" class="section">
+            <!-- Profils d'entraînement -->
+            <div
+                style="background: rgba(30, 41, 59, 0.6); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px 22px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap: 14px;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; color: var(--accent); font-size: 1.05rem;">Plateformes d'entraînement
+                        (Root-Me / TryHackMe / Hack The Box)</h4>
+                    <span style="color: var(--text-dim); font-size: 0.9rem;">Pseudo actif : <strong
+                            style="color: var(--text);">YohanImHere</strong></span>
+                </div>
+                <div class="timeline-tags">
+                    <span class="tag">Root-Me</span>
+                    <span class="tag">TryHackMe</span>
+                    <span class="tag">Hack The Box</span>
+                </div>
+            </div>
             <div class="section-header">
+                <!-- BANDEAU PALMARÈS & CLASSEMENTS CTF -->
+                <div class="ctf-rankings-wrapper">
+                    <h3 class="category-heading">🏆 Palmarès & Compétitions Officielles</h3>
+                    <div class="ctf-badge-grid">
+
+                        <!-- Carte 1 : PascalCTF 2026 -->
+                        <div class="ctf-rank-card" onclick="toggleCtfDetail(this)">
+                            <div class="ctf-rank-top">
+                                <span class="ctf-rank-tag">International</span>
+                                <span class="ctf-rank-position">92<sup>e</sup> <small>/ 855</small></span>
+                            </div>
+                            <div class="ctf-rank-name">PascalCTF 2026</div>
+                            <div class="ctf-rank-hint">Détails ▾</div>
+                            <div class="ctf-rank-details">
+                                Compétition internationale en ligne réunissant 855 équipes. Épreuves variées axées sur
+                                la cryptographie, le web et l'investigation numérique (forensics).
+                            </div>
+                        </div>
+
+                        <!-- Carte 2 : Jeanned'Hack 2025 -->
+                        <div class="ctf-rank-card" onclick="toggleCtfDetail(this)">
+                            <div class="ctf-rank-top">
+                                <span class="ctf-rank-tag">Normandie</span>
+                                <span class="ctf-rank-position">11<sup>e</sup> <small>/ 55</small></span>
+                            </div>
+                            <div class="ctf-rank-name">Jeanned'Hack 2025</div>
+                            <div class="ctf-rank-hint">Détails ▾</div>
+                            <div class="ctf-rank-details">
+                                Édition disputée en <strong>duo</strong> face à des équipes de 3 personnes. Résolution
+                                d'épreuves de reverse engineering, pwn et sécurité réseau.
+                            </div>
+                        </div>
+
+                        <!-- Carte 3 : Jeanned'Hack 2024 -->
+                        <div class="ctf-rank-card" onclick="toggleCtfDetail(this)">
+                            <div class="ctf-rank-top">
+                                <span class="ctf-rank-tag">Normandie</span>
+                                <span class="ctf-rank-position">6<sup>e</sup> <small>/ 20</small></span>
+                            </div>
+                            <div class="ctf-rank-name">Jeanned'Hack 2024</div>
+                            <div class="ctf-rank-hint">Détails ▾</div>
+                            <div class="ctf-rank-details">
+                                Participation en <strong>solo</strong> face à des équipes de 3 personnes. Top 6 décroché
+                                sur des épreuves de stéganographie, web et cryptanalyse.
+                            </div>
+                        </div>
+
+                        <!-- Carte 4 : Jeanned'Hack 2026 -->
+                        <div class="ctf-rank-card" onclick="toggleCtfDetail(this)">
+                            <div class="ctf-rank-top">
+                                <span class="ctf-rank-tag">Normandie</span>
+                                <span class="ctf-rank-position">Indéterminé</span>
+                            </div>
+                            <div class="ctf-rank-name">Jeanned'Hack 2026</div>
+                            <div class="ctf-rank-hint">Détails ▾</div>
+                            <div class="ctf-rank-details">
+                                Participation en <strong>solo</strong> face à des équipes complètes de 5 participants.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 <h2>Write-ups & Challenges CTF</h2>
                 <p class="section-subtitle">Résolutions d'épreuves de sécurité offensive et d'investigation.</p>
             </div>
@@ -881,7 +1684,6 @@
             </div>
         </section>
 
-        <!-- -->
         <!-- SECTION : CONTACT -->
         <section id="contact" class="section">
             <div class="section-header">
@@ -912,7 +1714,7 @@
                             </svg>
                         </button>
                         <button type="button" class="bubble-copy-btn" onclick="copyContact('yohanh2003@live.fr', this)"
-                            title="Copier l'e-mail" aria-label="Copier l'adresse e-mail">
+                            title="Copier l'e-mail">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -921,12 +1723,6 @@
                         </button>
                     </div>
                 </div>
-
-
-
-
-
-
 
                 <div class="contact-bubble-card">
                     <div class="bubble-icon-wrap" aria-hidden="true">
@@ -982,19 +1778,22 @@
 
     </div>
 
+    <!-- Toast Notification -->
     <div id="toast-notify" class="toast-notify">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 6L9 17l-5-5" />
         </svg>
-        <span>E-mail copié dans le presse-papier !</span>
+        <span id="toast-text">Action réussie !</span>
     </div>
+
     <!-- Modal Mail -->
-    <div class="mail-modal-overlay" id="mail-modal" onclick="closeMailModal(event)">
-        <div class="mail-modal-content">
+    <div class="modal-overlay" id="mail-modal" onclick="closeModalDirect(event, 'mail-modal')">
+        <div class="modal-box">
             <button class="modal-close-btn" onclick="toggleMailModal(false)">&times;</button>
-            <h3>Envoyer un message</h3>
-            <p class="modal-sub">Rédigez votre message ou ouvrez directement Gmail.</p>
+            <h3 style="margin: 0 0 6px 0; color: var(--accent);">Envoyer un message</h3>
+            <p style="margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-dim);">Rédigez votre message ou ouvrez
+                directement Gmail.</p>
 
             <form id="contact-form" onsubmit="handleSendMail(event)">
                 <div class="form-group">
@@ -1022,7 +1821,10 @@
             </form>
         </div>
     </div>
+
     <script>
+        const TARGET_EMAIL = 'yohanh2003@live.fr';
+
         function toggleMenu() {
             const drawer = document.getElementById('nav-drawer');
             const burger = document.getElementById('burger-btn');
@@ -1037,18 +1839,14 @@
             const targetSection = document.getElementById(sectionId);
             if (targetSection.classList.contains('active-content')) return;
 
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(s => s.classList.remove('active-content'));
-
-            const allNavItems = document.querySelectorAll('.nav-item');
-            allNavItems.forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active-content'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
             targetSection.classList.add('active-content');
-
             const sectionName = element.innerText.trim();
             document.getElementById('current-title').innerText = sectionName;
 
-            allNavItems.forEach(item => {
+            document.querySelectorAll('.nav-item').forEach(item => {
                 if (item.innerText.trim() === sectionName) {
                     item.classList.add('active');
                 }
@@ -1069,58 +1867,52 @@
             });
         });
 
-        function copyContact(text, buttonElement) {
-            const tempInput = document.createElement('input');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            if (buttonElement) {
-                buttonElement.classList.add('copied');
-                setTimeout(() => buttonElement.classList.remove('copied'), 2000);
-            }
-
+        /* Notifications toast */
+        function triggerToast(message) {
             const toast = document.getElementById('toast-notify');
+            document.getElementById('toast-text').innerText = message;
             toast.classList.add('visible');
             setTimeout(() => {
                 toast.classList.remove('visible');
             }, 2500);
         }
 
-        function checkOddGrids() {
-            const grids = document.querySelectorAll('.ctf-grid');
-            grids.forEach(grid => {
-                const itemsCount = grid.children.length;
-                if (itemsCount % 2 !== 0 && itemsCount > 0) {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'ctf-card-placeholder';
-                    placeholder.innerHTML = `
-                        <div class="placeholder-icon">📦</div>
-                        <h4>Plus de challenges</h4>
-                        <p>D'autres challenges arrivent bientôt</p>
-                    `;
-                    grid.appendChild(placeholder);
+        function copyContact(text, buttonElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                triggerToast('E-mail copié dans le presse-papier !');
+            });
+        }
+
+        /* Filtrage des projets */
+        function filterProjects(category, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    const categories = card.getAttribute('data-category').split(' ');
+                    if (categories.includes(category)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
                 }
             });
         }
 
-        window.addEventListener('DOMContentLoaded', checkOddGrids);
-        const TARGET_EMAIL = 'yohanh2003@live.fr';
-
+        /* Modale Contact Mail */
         function toggleMailModal(open) {
             const modal = document.getElementById('mail-modal');
-            if (open) {
-                modal.classList.add('open');
-            } else {
-                modal.classList.remove('open');
-            }
+            if (open) modal.classList.add('open');
+            else modal.classList.remove('open');
         }
 
-        function closeMailModal(e) {
-            if (e.target.id === 'mail-modal') {
-                toggleMailModal(false);
+        function closeModalDirect(e, id) {
+            if (e.target.id === id) {
+                e.target.classList.remove('open');
             }
         }
 
@@ -1139,6 +1931,29 @@
             const body = encodeURIComponent(document.getElementById('mail-body').value || '');
             window.location.href = `mailto:${TARGET_EMAIL}?subject=${subject}&body=${body}`;
             toggleMailModal(false);
+        }
+
+        /* CTF Grid placeholder balancing */
+        function checkOddGrids() {
+            const grids = document.querySelectorAll('.ctf-grid');
+            grids.forEach(grid => {
+                const itemsCount = grid.children.length;
+                if (itemsCount % 2 !== 0 && itemsCount > 0) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'ctf-card-placeholder';
+                    placeholder.innerHTML = `
+                        <div class="placeholder-icon">📦</div>
+                        <h4>Plus de challenges</h4>
+                        <p>D'autres challenges arrivent bientôt</p>
+                    `;
+                    grid.appendChild(placeholder);
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', checkOddGrids);
+        function toggleCtfDetail(cardElement) {
+            cardElement.classList.toggle('open');
         }
     </script>
 </body>

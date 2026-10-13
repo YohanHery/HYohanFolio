@@ -8,10 +8,14 @@
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
+            --card-hover-bg: #24344d;
             --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.25);
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
             --text: #f1f5f9;
             --text-dim: #94a3b8;
             --hover-dark: rgba(0, 0, 0, 0.2);
+            --border-subtle: rgba(56, 189, 248, 0.15);
         }
 
         * {
@@ -19,23 +23,25 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text);
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         /* --- Barre de Navigation --- */
         nav {
             width: 100%;
             background-color: var(--card-bg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .nav-desktop {
@@ -52,16 +58,18 @@
         .nav-item {
             padding: 16px 28px;
             cursor: pointer;
-            transition: background-color 0.3s, filter 0.3s;
-            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 0.95rem;
+            color: var(--text-dim);
+            border-bottom: 3px solid transparent;
         }
 
         .nav-item:hover {
             background-color: var(--hover-dark);
-            filter: brightness(0.8);
+            color: var(--text);
         }
 
         .active {
@@ -129,9 +137,9 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             z-index: 1001;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -148,10 +156,39 @@
 
         /* --- Contenu Principal --- */
         .container {
-            max-width: 1000px;
+            max-width: 1050px;
             width: 90%;
-            margin-top: 30px;
-            margin-bottom: 40px;
+            margin-top: 35px;
+            margin-bottom: 50px;
+            flex: 1;
+        }
+
+        .section-header {
+            margin-bottom: 28px;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            margin: 0 0 8px 0;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            display: block;
+            width: 48px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            margin-top: 6px;
+        }
+
+        .section-subtitle {
+            color: var(--text-dim);
+            margin: 6px 0 0 0;
+            font-size: 1rem;
         }
 
         .section {
@@ -164,15 +201,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Style États Vides (Empty State) --- */
+        /* --- Style États Vides --- */
         .empty-state {
             border: 2px dashed rgba(56, 189, 248, 0.3);
             background: rgba(30, 41, 59, 0.5);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 40px 20px;
             text-align: center;
             margin: 20px 0;
@@ -213,27 +250,193 @@
             line-height: 1.5;
         }
 
-        /* --- Contacts --- */
-        .contact-list {
-            list-style: none;
-            padding: 0;
+        /* */
+        /* --- Style Section Contact Refondue --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 25px;
         }
 
-        .contact-item {
+        .contact-bubble-card {
             background: var(--card-bg);
-            margin: 12px 0;
-            padding: 15px;
-            border-radius: 8px;
+            border-radius: 20px;
+            padding: 32px 24px 28px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .contact-bubble-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+            border-radius: 0 0 6px 6px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease, width 0.3s ease;
+        }
+
+        .contact-bubble-card:hover {
+            transform: translateY(-8px);
+            background: var(--card-hover-bg);
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5), 0 0 25px var(--accent-glow);
+        }
+
+        .contact-bubble-card:hover::before {
+            opacity: 1;
+            width: 80%;
+        }
+
+        .bubble-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.1);
+            border: 2px solid rgba(56, 189, 248, 0.3);
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            border-left: 4px solid var(--accent);
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--accent);
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        .contact-item a {
-            color: var(--accent);
+        .contact-bubble-card:hover .bubble-icon-wrap {
+            background: var(--accent);
+            color: #0f172a;
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+            border-color: var(--accent);
+        }
+
+        .bubble-icon-wrap svg {
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-bubble-card:hover .bubble-icon-wrap svg {
+            transform: scale(1.05);
+        }
+
+        .bubble-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--text);
+            letter-spacing: 0.5px;
+        }
+
+        .bubble-detail {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin: 0 0 20px 0;
             word-break: break-all;
+            line-height: 1.4;
+            flex-grow: 1;
+            padding: 0 4px;
+        }
+
+        .bubble-btn-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .bubble-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            outline: none;
+            width: 100%;
+        }
+
+        .bubble-btn:hover {
+            background: var(--accent);
+            color: #0f172a;
+            border-color: var(--accent);
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+        }
+
+        .bubble-copy-btn {
+            background: transparent;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            color: var(--text-dim);
+            border-radius: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+        }
+
+        .bubble-copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .bubble-copy-btn.copied {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: #22c55e;
+            color: #4ade80;
+        }
+
+        /* Notification toast pour copie */
+        .toast-notify {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast-notify.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* --- CTF --- */
@@ -274,7 +477,7 @@
             margin: 15px 10px 5px 10px;
         }
 
-        /* --- Carte Placeholder (No More Chall) --- */
+        /* --- Carte Placeholder --- */
         .ctf-card-placeholder {
             background: rgba(30, 41, 59, 0.35);
             border: 2px dashed rgba(56, 189, 248, 0.25);
@@ -316,7 +519,19 @@
             opacity: 0.8;
         }
 
+        /* */
         /* --- Responsive / Mobile --- */
+        @media (max-width: 860px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .contact-bubble-card {
+                padding: 26px 20px;
+            }
+        }
+
         @media (max-width: 650px) {
             .nav-desktop {
                 display: none;
@@ -425,13 +640,19 @@
         
         <!-- SECTION : EXPÉRIENCE -->
         <section id="experience" class="section active-content">
-            <h2>Mon Expérience</h2>
+            <div class="section-header">
+                <h2>Mon Expérience</h2>
+                <p class="section-subtitle">Aperçu de mon parcours technique et professionnel.</p>
+            </div>
             <p>Détaillez ici votre parcours professionnel...</p>
         </section>
 
         <!-- SECTION : PROJETS -->
         <section id="projet" class="section">
-            <h2>Mes Projets</h2>
+            <div class="section-header">
+                <h2>Mes Projets</h2>
+                <p class="section-subtitle">Réalisations, architectures et développements personnels.</p>
+            </div>
             <div class="empty-state">
                 <div class="empty-icon">🛰️</div>
                 <h4>Déploiement en cours</h4>
@@ -441,7 +662,10 @@
 
         <!-- SECTION : CTF -->
         <section id="ctf" class="section">
-            <h2>Write-ups & Challenges CTF</h2>
+            <div class="section-header">
+                <h2>Write-ups & Challenges CTF</h2>
+                <p class="section-subtitle">Résolutions d'épreuves de sécurité offensive et d'investigation.</p>
+            </div>
 
             <div class="ctf-category">
                 <h3>Facile</h3>
@@ -483,16 +707,94 @@
             </div>
         </section>
 
+        <!-- -->
         <!-- SECTION : CONTACT -->
         <section id="contact" class="section">
-            <h2>Me Contacter</h2>
-            <ul class="contact-list">
-                <li class="contact-item">📧 Email : <a href="mailto:yohanh2003@live.fr">yohanh2003@live.fr</a></li>
-                <li class="contact-item">🔗 LinkedIn : <a href="https://www.linkedin.com/in/yohan-hery" target="_blank">linkedin.com/in/yohan-hery</a></li>
-                <li class="contact-item">💻 GitHub : <a href="https://github.com/YohanHery/YohanDef.github.io/" target="_blank">github.com/YohanDef</a></li>
-            </ul>
+            <div class="section-header">
+                <h2>Me Contacter</h2>
+                <p class="section-subtitle">Une opportunité, un projet ou un échange technique ? Retrouvez mes différents canaux ci-dessous.</p>
+            </div>
+            
+            <div class="contact-grid">
+                
+                <div class="contact-bubble-card">
+                    <div class="bubble-icon-wrap" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <div class="bubble-title">Adresse E-mail</div>
+                    <div class="bubble-detail">yohanh2003@live.fr</div>
+                    <div class="bubble-btn-group">
+                        <a href="mailto:yohanh2003@live.fr" class="bubble-btn">
+                            <span>M'écrire</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <button class="bubble-copy-btn" onclick="copyContact('yohanh2003@live.fr', this)" title="Copier l'e-mail" aria-label="Copier l'adresse e-mail">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="contact-bubble-card">
+                    <div class="bubble-icon-wrap" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                            <rect x="2" y="9" width="4" height="12"/>
+                            <circle cx="4" cy="4" r="2"/>
+                        </svg>
+                    </div>
+                    <div class="bubble-title">LinkedIn</div>
+                    <div class="bubble-detail">linkedin.com/in/yohan-hery</div>
+                    <div class="bubble-btn-group">
+                        <a href="https://www.linkedin.com/in/yohan-hery" target="_blank" rel="noopener noreferrer" class="bubble-btn">
+                            <span>Se connecter</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-bubble-card">
+                    <div class="bubble-icon-wrap" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                    </div>
+                    <div class="bubble-title">GitHub</div>
+                    <div class="bubble-detail">github.com/YohanDef</div>
+                    <div class="bubble-btn-group">
+                        <a href="https://github.com/YohanHery/YohanDef.github.io/" target="_blank" rel="noopener noreferrer" class="bubble-btn">
+                            <span>Explorer</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </section>
 
+    </div>
+
+    <div id="toast-notify" class="toast-notify">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6L9 17l-5-5"/>
+        </svg>
+        <span>E-mail copié dans le presse-papier !</span>
     </div>
 
     <script>
@@ -541,6 +843,26 @@
                 }
             });
         });
+
+        function copyContact(text, buttonElement) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            if (buttonElement) {
+                buttonElement.classList.add('copied');
+                setTimeout(() => buttonElement.classList.remove('copied'), 2000);
+            }
+
+            const toast = document.getElementById('toast-notify');
+            toast.classList.add('visible');
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 2500);
+        }
 
         function checkOddGrids() {
             const grids = document.querySelectorAll('.ctf-grid');
